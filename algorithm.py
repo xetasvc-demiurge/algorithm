@@ -1,42 +1,63 @@
-# sample input data: list of dictionaries
-data = [
-    {"name": "John", "salary": 50000},
-    {"name": "Jane", "salary": 60000},
-    {"name": "John", "salary": 70000},
-    {"name": "Bob",  "salary": 45000},
-    {"name": "Jane", "salary": 65000},
-]
 
-# ---------------------------
-# Step 1: Collect salaries by name
-# ---------------------------
-salaries_by_name = {}  # name -> list of salaries
+#!/usr/bin/env python3
+"""
+process_salaries.py
 
-for row in data:
-    name = row["name"]
-    salary = row["salary"]
-    # initialize list if name not seen
-    if name not in salaries_by_name:
-        salaries_by_name[name] = []
-    salaries_by_name[name].append(salary)
-# {John: [50000, 70000], Jane: [60000, 65000], Bob: [45000]}
-# ---------------------------
-# Step 2: Identify names with more than one salary
-# ---------------------------
-names_with_multiple_salaries = []
-for name, sal_list in salaries_by_name.items():
-    if len(sal_list) > 1:
-        names_with_multiple_salaries.append(name)
-# [Jone, Jane]
-# ---------------------------
-# Step 3: Compute max salary for each selected name
-# ---------------------------
-max_salary_by_name = {}  # name -> max salary
-for name in names_with_multiple_salaries:
-    max_salary_by_name[name] = max(salaries_by_name[name])
-# {John: 70000, Jane: 65000}
-# ---------------------------
-# Step 4: Print the name and the max salary
-# ---------------------------
-for name, max_salary in max_salary_by_name.items():
-    print(f"Name: {name}  |  Max Salary: {max_salary}")
+Algorithm:
+- Iterate through the data set.
+- Save unique Names.
+- Pick the name(s) that have more than one salary.
+- For each such name, get the max salary.
+- Print the name and the max salary.
+"""
+
+from collections import defaultdict
+import sys
+
+def find_max_salaries(records):
+    """
+    records: iterable of (name, salary) pairs
+    returns: dict { name: max_salary } for names that have >1 salary entry
+    """
+    salaries_by_name = defaultdict(list)
+    for name, salary in records:
+        # normalize name (strip whitespace)
+        key = str(name).strip()
+        try:
+            num = float(salary)
+        except (TypeError, ValueError):
+            # skip non-numeric salaries
+            continue
+        salaries_by_name[key].append(num)
+
+    # keep only names with more than one salary, compute max
+    result = {}
+    for name, sal_list in salaries_by_name.items():
+        if len(sal_list) > 1:
+            result[name] = max(sal_list)
+    return result
+
+def main():
+    # Example dataset: list of (name, salary)
+    data = [
+        ("John", 50000),
+        ("Jane", 70000),
+        ("John", 55000),
+        ("Alice", 48000),
+        ("Jane", 72000),
+        ("Bob", 60000),
+    ]
+
+    # If you want to accept CSV input from a file, implement parsing here.
+    # For now we use the example `data`.
+    results = find_max_salaries(data)
+
+    if not results:
+        print("No names have more than one salary entry.")
+        return
+
+    for name, max_salary in results.items():
+        print(f"{name}: {max_salary}")
+
+if __name__ == "__main__":
+    main()

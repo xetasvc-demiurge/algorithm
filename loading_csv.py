@@ -23,14 +23,15 @@ def safe_float(s):
     except (TypeError, ValueError):
         return None
 
-def main(csv_path):
+
+def compute_stats(csv_path, numeric_columns=NUMERIC_COLUMNS):
     # 2) Open the csv
     with open(csv_path, newline="", encoding="utf-8") as f:
         reader = csv.DictReader(f)
 
         # Prepare accumulators for each numeric column
         stats = {}
-        for col in NUMERIC_COLUMNS:
+        for col in numeric_columns:
             stats[col] = {
                 "count": 0,
                 "sum": 0.0,
@@ -41,7 +42,7 @@ def main(csv_path):
 
         # 3) Read through the csv
         for row in reader:
-            for col in NUMERIC_COLUMNS:
+            for col in numeric_columns:
                 raw = row.get(col)
                 val = safe_float(raw)
                 if val is None:
@@ -57,31 +58,41 @@ def main(csv_path):
                     s["max"] = val
                 s["values"].append(val)  # optional: keep values for median, stdev
 
-        # Print results
-        for col, s in stats.items():
-            print(f"Column: {col}")
-            if s["count"] == 0:
-                print("  No numeric data found.")
-                continue
-            mean = s["sum"] / s["count"]
-            # median example (simple)
-            values_sorted = sorted(s["values"])
-            mid = s["count"] // 2
-            if s["count"] % 2 == 1:
-                median = values_sorted[mid]
-            else:
-                median = (values_sorted[mid - 1] + values_sorted[mid]) / 2
-            # simple population variance / stdev (sample stdev would divide by count-1)
-            var = sum((x - mean) ** 2 for x in s["values"]) / s["count"]
-            stdev = math.sqrt(var)
+    # Derive mean/median/stdev for columns that had numeric data
+    for col, s in stats.items():
+        if s["count"] == 0:
+            continue
+        mean = s["sum"] / s["count"]
+        values_sorted = sorted(s["values"])
+        mid = s["count"] // 2
+        if s["count"] % 2 == 1:
+            median = values_sorted[mid]
+        else:
+            median = (values_sorted[mid - 1] + values_sorted[mid]) / 2
+        var = sum((x - mean) ** 2 for x in s["values"]) / s["count"]
+        s["mean"] = mean
+        s["median"] = median
+        s["stdev"] = math.sqrt(var)
 
-            print(f"  count: {s['count']}")
-            print(f"  sum: {s['sum']}")
-            print(f"  min: {s['min']}")
-            print(f"  max: {s['max']}")
-            print(f"  mean: {mean}")
-            print(f"  median: {median}")
-            print(f"  stdev (population): {stdev}")
+    return stats
+
+
+def main(csv_path):
+    stats = compute_stats(csv_path)
+
+    for col, s in stats.items():
+        print(f"Column: {col}")
+        if s["count"] == 0:
+            print("  No numeric data found.")
+            continue
+        print(f"  count: {s['count']}")
+        print(f"  sum: {s['sum']}")
+        print(f"  min: {s['min']}")
+        print(f"  max: {s['max']}")
+        print(f"  mean: {s['mean']}")
+        print(f"  median: {s['median']}")
+        print(f"  stdev (population): {s['stdev']}")
 
 if __name__ == "__main__":
     main(CSV_PATH)
+
