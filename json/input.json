@@ -1,0 +1,130 @@
+[
+  {
+    "transaction_id": "TXN10001",
+    "customer": {
+      "id": 501,
+      "name": "John Smith",
+      "email": "john.smith@example.com"
+    },
+    "transaction_date": "2026-07-01T10:15:00Z",
+    "items": [
+      {
+        "product_id": "P100",
+        "product_name": "Laptop",
+        "quantity": 1,
+        "unit_price": 899.99
+      },
+      {
+        "product_id": "P205",
+        "product_name": "Mouse",
+        "quantity": 2,
+        "unit_price": 24.99
+      }
+    ],
+    "payment": {
+      "method": "card",
+      "currency": "GBP"
+    },
+    "status": "completed"
+  },
+  {
+    "transaction_id": "TXN10002",
+    "customer": {
+      "id": 502,
+      "name": "Sarah Jones",
+      "email": "sarah.jones@example.com"
+    },
+    "transaction_date": "2026-07-02T14:30:00Z",
+    "items": [
+      {
+        "product_id": "P310",
+        "product_name": "Keyboard",
+        "quantity": 1,
+        "unit_price": 74.5
+      },
+      {
+        "product_id": "P205",
+        "product_name": "Mouse",
+        "quantity": 1,
+        "unit_price": 24.99
+      }
+    ],
+    "payment": {
+      "method": "paypal",
+      "currency": "GBP"
+    },
+    "status": "completed"
+  },
+  {
+    "transaction_id": "TXN10003",
+    "customer": {
+      "id": 503,
+      "name": "Michael Brown",
+      "email": "michael.brown@example.com"
+    },
+    "transaction_date": "2026-07-03T09:45:00Z",
+    "items": [
+      {
+        "product_id": "P450",
+        "product_name": "Monitor",
+        "quantity": 2,
+        "unit_price": 219.0
+      }
+    ],
+    "payment": {
+      "method": "card",
+      "currency": "GBP"
+    },
+    "status": "completed"
+  },
+  {
+    "transaction_id": "TXN10004",
+    "customer": {
+      "id": 501,
+      "name": "John Smith",
+      "email": "john.smith@example.com"
+    },
+    "transaction_date": "2026-07-04T16:20:00Z",
+    "items": [
+      {
+        "product_id": "P600",
+        "product_name": "USB-C Hub",
+        "quantity": 1,
+        "unit_price": 49.99
+      },
+      {
+        "product_id": "P205",
+        "product_name": "Mouse",
+        "quantity": 1,
+        "unit_price": 24.99
+      }
+    ],
+    "payment": {
+      "method": "card",
+      "currency": "GBP"
+    },
+    "status": "refunded"
+  },
+  {
+    "transaction_id": "TXN10005",
+    "customer": {
+      "id": 504,
+      "name": "Emma Wilson",
+      "email": "emma.wilson@example.com"
+    },
+    "transaction_date": "2026-07-05T11:05:00Z",
+    "items": [
+      {
+        "product_id": "P100",
+        "product_name": "Laptop",
+        "quantity": 1,
+        "unit_price": 899.99
+      }
+    ],
+    "payment": {
+      "method": "bank_transfer",
+      "currency": "GBP"
+    },
+    "status": "completed"
+  }
+]
